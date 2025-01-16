@@ -46,10 +46,8 @@ jobs:
         run: |
           mkdir -p assets/models
           kaggle models instances versions download google/gemma/tfLite/gemma-2b-it-gpu-int4/1
-          if [ -f assets/models/*.tar.gz ]; then
-            tar -o assets/models/*.tar.gz -d assets/models/
-            rm assets/models/*.tar.gz
-          fi
+          tar -xzvf gemma.tar.gz -C assets/models/
+          rm gemma.tar.gz
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
           KAGGLE_KEY: ${{ secrets.KAGGLE_KEY }}
