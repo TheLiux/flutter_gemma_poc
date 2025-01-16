@@ -6,7 +6,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.7.0-307.0.dev
+  sdk: ^3.6.1
 dependencies:
   flutter:
     sdk: flutter
@@ -15,7 +15,7 @@ dependencies:
   flutter_markdown: ^0.7.5
   flutter_riverpod: ^2.6.1
   hooks_riverpod: ^2.6.1
-  path: ^1.9.1
+  path: ^1.9.0
   path_provider: ^2.1.5
   flutter_gemma: ^0.4.2
   flutter_hooks: ^0.20.5
