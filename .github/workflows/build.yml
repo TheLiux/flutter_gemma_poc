@@ -9,10 +9,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    
     permissions:
-      contents: write # Required for gh-pages deployment
-
+      contents: write
+    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -20,13 +20,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.x"
+          python-version: '3.x'
 
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: "3.27.2"
+          flutter-version: '3.27.2'
 
       - name: Install Kaggle CLI
         run: |
@@ -45,11 +45,10 @@ jobs:
       - name: Download Gemma model
         run: |
           mkdir -p assets/models
-          kaggle models instances versions download google/gemma/tfLite/gemma-2b-it-gpu-int4/1 -p assets/models
-          # Only try to unzip if a zip file exists
-          if [ -f assets/models/*.zip ]; then
-            unzip -o assets/models/*.zip -d assets/models/
-            rm assets/models/*.zip
+          kaggle models instances versions download google/gemma/tfLite/gemma-2b-it-gpu-int4/1
+          if [ -f assets/models/*.tar.gz ]; then
+            tar -o assets/models/*.tar.gz -d assets/models/
+            rm assets/models/*.tar.gz
           fi
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
@@ -61,9 +60,14 @@ jobs:
       - name: Build Flutter Web
         run: flutter build web --release
 
+      - name: Install Git LFS
+        run: git lfs install
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
-        if: github.ref == 'refs/heads/main' # Only deploy on main branch
+        if: github.ref == 'refs/heads/main'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./build/web
+          enable_jekyll: false
+          lfs: true
