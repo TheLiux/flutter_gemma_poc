@@ -48,9 +48,11 @@ jobs:
       - name: Download Gemma model
         run: |
           mkdir -p assets/models
+          cd ./assets/models/
           kaggle models instances versions download google/gemma/tfLite/gemma-2b-it-gpu-int4/1
-          tar -xzvf gemma.tar.gz -C assets/models/
+          tar -xzvf gemma.tar.gz 
           rm gemma.tar.gz
+          cd ../../
           ls assets/models/*
         env:
           KAGGLE_USERNAME: ${{ secrets.KAGGLE_USERNAME }}
